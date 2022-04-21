@@ -1,0 +1,71 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% block title %} Sold products {% endblock %}
+{% block content %}
+<div class="col s12">
+
+        <div class="col s12">
+            <h6 style="text-transform: uppercase;">
+                {{ title }}
+            </h6>
+            <div class="divider"></div>
+            <nav class="blue lighten-5">
+                <ul>
+                    <li>
+                        <a href="{% url 'inventory:add_product' %}" class="btn btn-small blue darken-3"><i class="material-icons">add</i></a>
+                        <a href="{% url 'inventory:export-csv' %}" class="btn btn-small blue darken-3">Export csv</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="divider"></div>
+
+            <div class="">
+                <!--messages-->
+               {% if messages %}
+                <div class="card col s12">
+                    <ul class="messages green-text">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+
+            <table class="responsive-table highlight" id="products_table">
+                <thead>
+                      <tr>
+                          <th>Product</th>
+                          <th>Vol</th>
+                          <th>Qty</th>
+                          <th>Client</th>
+                          <th>Unite price</th>
+                          <th>Total price</th>
+                          <th>Date</th>
+                          <th></th>
+                          <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in all_sold_products %}
+                    <tr class="prod">
+                        <td><a href="">{{ product.product_name }}</a></td>
+                        <td>{{ product.sold_bottle_capacity }}</td>
+                        <td>{{ product.quantity }}</td>
+                        <td>{{ product.client }}</td>
+                        <td>{{ product.price_per_crate }}</td>
+                        <td>{{ product.sale_total_price }}</td>
+                        <td>{{ product.published }}</td>
+                        {% if perms.inventory.delete_product %}
+                        <td><a href="" class="waves-effect waves-light confirm-delete"><i class="material-icons" style="color: red;">delete</i></a></td>
+                        {% endif %}
+                        {% if perms.inventory.change_product %}
+                        <td><a href="{% url 'inventory:update_sale' product.id %}" class="waves-effect waves-light "><i class="material-icons" style="color: navy;">edit</i></a></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock  %}

@@ -1,0 +1,51 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% block content %}
+   <div class="container">
+
+        <!--messages-->
+       {% if messages %}
+        <ul class="messages red-text">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+       {% if request.user.is_superuser %}
+       <div class="row ">
+           <div class="col s12 m8">
+               <div class="row card-panel">
+                   <div class="row">
+                        <h5>{{ title }}</h5>
+                       <div class="divider"></div>
+                    </div>
+                   <div class="row">
+                       <form action="" method="POST" enctype="multipart/form-data">
+                           {% csrf_token %}
+                           {% for field in form %}
+                                <div class="fieldWrapper">
+                                    <div class="red-text">{{ field.errors }}</div>
+                                    {{ field.label_tag }} {{ field }}
+
+                                </div>
+                            {% endfor %}
+                           <input type="submit" class="btn blue darken-3" value="Create user">
+                           <!--<p>Already have an account <a href="{% url 'login' %}">Login</a></p>-->
+                       </form>
+                   </div>
+               </div>
+
+           </div>
+           <div class="col s12 m4">
+
+           </div>
+       </div>
+
+       {% else %}
+       <div class="">
+           <p>You don't have permission to add a new user, please contact your administrator.</p>
+       </div>
+       {% endif %}
+   </div>
+{% endblock %}

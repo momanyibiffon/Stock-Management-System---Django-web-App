@@ -1,0 +1,72 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+    <div class="row">
+
+        <div class="col s12">
+            <h5>
+                {{ title }}
+            </h5>
+            <nav class="blue lighten-5">
+                <ul>
+                    <li>
+                        <a href="{% url 'inventory:index' %}" class="btn btn-small blue darken-3"><i class="material-icons">arrow_back</i></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'inventory:products' %}" class="blue-text">All products</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="divider"></div>
+
+            <div class="">
+                <!--messages-->
+               {% if messages %}
+                <div class="card col s12">
+                    <ul class="messages green-text">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if products_out_of_stock %}
+            <table class="responsive-table highlight" id="products_table">
+                <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Category</th>
+                          <th>Volume</th>
+                          <th>Qty in stock</th>
+                          <th>price_per_crate</th>
+                          <!--<th>Reorder level</th>-->
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products_out_of_stock %}
+                    <tr class="prod">
+                        <td><a href="{% url 'inventory:product_details' product.id%}">{{ product.product_name }}</a></td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.bottle_capacity }}</td>
+                        <td class="in_stock">{{ product.quantity_in_stock }}</td>
+                        <td>{{ product.price_per_crate }}</td>
+                        <!--<td class="reorder">{{ product.reorder_level }}-->
+                        <!--{% if perms.inventory.delete_product %}
+                        <td><a href="" class="waves-effect waves-light confirm-delete"><i class="material-icons" style="color: red;">delete</i></a></td>
+                        {% endif %}
+                        {% if perms.inventory.change_product %}
+                        <td><a href="{% url 'inventory:edit_product' product.id %}" class="waves-effect waves-light "><i class="material-icons" style="color: navy;">edit</i></a></td>
+                        {% endif %}-->
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+            </table>
+
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

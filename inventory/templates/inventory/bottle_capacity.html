@@ -1,0 +1,80 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+    <div class="col s12">
+        <h6 style="text-transform: uppercase;">{{ title }}</h6>
+        <div class="divider"></div>
+
+        <nav class="blue lighten-5">
+            <ul>
+                <li>
+                    <a href="{% url 'inventory:add_bottle_capacity' %}" class="btn btn-small blue darken-3"><i class="material-icons">add</i></a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="">
+            <!--messages-->
+           {% if messages %}
+            <div class="card col s12">
+                <ul class="messages green-text">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+
+    <div class="row">
+
+        <div class="col s12 m6">
+            <div class="col s12">
+                <table class="responsive-table highlight" id="capacity_table">
+                    <thead>
+                          <tr>
+                              <th>Capacity</th>
+                              <th><b>Action</b></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for bottle in all_bottles %}
+                        <tr>
+                            <td><a href="">{{ bottle.bottle_capacity }}</a></td>
+                            <td>
+                                {% if perms.inventory.change_product %}
+                                <a href="{% url 'inventory:edit_bottle_capacity' bottle.id %}" class="waves-effect waves-light "><i class="material-icons" style="color: navy;">edit</i></a>
+                                {% endif %}
+                                {% if perms.inventory.delete_product %}
+                                <a href="{% url 'inventory:delete_capacity' bottle.id %}" class="waves-effect waves-light confirm-delete"><i class="material-icons" style="color: red;">delete</i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col s12 m6">
+            <div class="add_category">
+                <ul class="collapsible">
+                    <li>
+                      <div class="collapsible-header"><span class=" btn btn-small blue darken-3"><i class="material-icons">add</i></span> Add Category</div>
+                      <div class="collapsible-body">
+                           <form action="" method="POST">
+                                {% csrf_token %}
+                                {{ form }}
+                                <input type="submit" value="Save" class="btn btn-small blue darken-3">
+                            </form>
+                      </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

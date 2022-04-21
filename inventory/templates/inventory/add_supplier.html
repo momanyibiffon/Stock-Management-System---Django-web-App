@@ -1,0 +1,48 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% block title %}Add supplier{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="col s12">
+        <h5>{{ title }}</h5>
+        <div class="">
+            <nav class="blue lighten-5">
+                <ul>
+                    <li>
+                        <a href="{% url 'inventory:suppliers' %}" class="btn btn-small blue darken-3"><i class="material-icons">arrow_back</i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="divider"></div>
+        <div class="">
+
+            <div class="">
+                <!--messages-->
+               {% if messages %}
+                <div class="card col s12">
+                    <ul class="messages green-text">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="row">
+                <div class="col s6">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <!--{{ supplier_form|crispy }}-->
+                        {{ supplier_form.as_p }}
+                        <input type="submit" value="Save" class="btn btn-medium blue darken-3">
+                    </form>
+                </div>
+                <div class="col s6">
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

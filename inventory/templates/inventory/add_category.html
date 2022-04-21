@@ -1,0 +1,32 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% block title %}Update category{% endblock %}
+
+{% block content %}
+    <!--This file has been used while updating the category details-->
+    <div class="col s12">
+        <h5><b>Update:</b> {{ category.category_name }}</h5>
+        <div class="divider"></div>
+        <div class="divider"></div>
+        <nav class="blue lighten-5">
+            <ul>
+                <li>
+                    <a href="{% url 'inventory:categories' %}" class="btn btn-small blue darken-3"><i class="material-icons">arrow_back</i></a>
+                </li>
+            </ul>
+        </nav>
+        <div class="row">
+            <div class="col s6">
+                <form action="" method="POST">
+
+                    {% csrf_token %}
+                    {{ category_form.as_p }}
+                    <input type="submit" value="Update" class="btn btn-medium blue darken-3">
+                </form>
+            </div>
+            <div class="col s6">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

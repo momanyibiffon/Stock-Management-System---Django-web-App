@@ -1,0 +1,78 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% block title %}Product{% endblock %}
+
+{% block content %}
+    <div class="row product_details">
+        <div class="col s12" style="margin-top: 30px;">
+            <h5><b>Product:</b> {{ product.product_name }}</h5>
+        </div>
+        <div class="col s12">
+            <nav class="blue lighten-5">
+                <ul>
+                    <li>
+                        <a href="{% url 'inventory:products' %}" class="btn btn-small blue darken-3"><i class="material-icons">arrow_back</i></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'inventory:receive_product' product.id %}" class="btn btn-small blue darken-2">Receive</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'inventory:sell_product' product.id %}" class="btn btn-small blue darken-1">Issue</a>
+                    </li>
+                    <li>
+                        {% if perms.inventory.delete_product %}
+                        <a href="{% url 'inventory:delete_product' product.id%}" class="waves-effect waves-light confirm-delete"><i class="material-icons" style="color: red;" title="Delete">delete</i></a>
+                        {% endif %}
+                    </li>
+                    <li>
+                        {% if perms.inventory.change_product %}
+                        <a href="{% url 'inventory:edit_product' product.id %}" class="waves-effect waves-light "><i class="material-icons" style="color: navy;" title="Edit">edit</i></a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col s12">
+            <!--messages-->
+               {% if messages %}
+                <div class="card col s12">
+                    <ul class="messages green-text">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+            <div class="divider" style="margin-top: 50px;"></div>
+            <table class="responsive-table highlight">
+                <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Category</th>
+                          <th>Volume</th>
+                          <th>Qty in stock</th>
+                          <th>price_per_crate</th>
+                          <th>Reorder level</th>
+                          <!--<th><b>Action</b></th>-->
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ product.product_name }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.bottle_capacity }}</td>
+                        <td>{{ product.quantity_in_stock }}</td>
+                        <td>{{ product.price_per_crate }}</td>
+                        <td>{{ product.reorder_level }}</td>
+                       <!-- <td>
+                            <a href="" class="waves-effect waves-light "><i class="material-icons" style="color: navy;">edit</i></a>
+                            <a href="" class="waves-effect waves-light confirm-delete"><i class="material-icons" style="color: red;">delete</i></a>
+                        </td>-->
+                    </tr>
+
+                    </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

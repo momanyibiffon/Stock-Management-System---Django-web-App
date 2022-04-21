@@ -1,0 +1,71 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% block title %}Supplier{% endblock %}
+
+{% block content %}
+    <div class="">
+        <h5>{{ title }}</h5>
+        <div class="divider"></div>
+        <nav class="blue lighten-5">
+            <ul>
+                <li>
+                    <a href="{% url 'inventory:suppliers' %}" class="btn btn-small blue darken-3"><i class="material-icons">arrow_back</i></a>
+                </li>
+                {% if perms.inventory.change_product %}
+                <li>
+                    <a href="{% url 'inventory:edit_supplier' supplier_details.id %}" class="waves-effect waves-light "><i class="material-icons" style="color: navy;">edit</i></a>
+                </li>
+                {% endif %}
+                {% if perms.inventory.delete_product %}
+                <li>
+                    <a href="{% url 'inventory:delete_supplier' supplier_details.id %}" class="waves-effect waves-light confirm-delete"><i class="material-icons" style="color: red;">delete</i></a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </div>
+
+    <div class="row" style="margin-top: 70px;">
+        <div class="col s12 m7">
+            <div class="">
+                <!--messages-->
+               {% if messages %}
+                <div class="card col s12">
+                    <ul class="messages green-text">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            <table class="responsive-table highlight">
+                <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Mobile</th>
+                          <th>Email Address</th>
+                          <th>Location</th>
+                          <!--<th><b>Action</b></th>-->
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="">{{ supplier_details.supplier_name }}</a></td>
+                            <td>{{ supplier_details.mobile_number }}</td>
+                            <td>{{ supplier_details.email_address }}</td>
+                            <td>{{ supplier_details.location }}</td>
+                            <!--<td>
+                                <a href="{% url 'inventory:edit_supplier' supplier_details.id %}" class="waves-effect waves-light "><i class="material-icons" style="color: navy;">edit</i></a>
+                                <a href="" class="waves-effect waves-light confirm-delete"><i class="material-icons" style="color: red;">delete</i></a>
+                            </td>-->
+                        </tr>
+                    </tbody>
+            </table>
+        </div>
+        <div class="col s12 m5">
+
+        </div>
+    </div>
+{% endblock %}

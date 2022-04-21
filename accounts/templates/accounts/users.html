@@ -1,0 +1,68 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+    <div class="col s12">
+        <div class="col s12">
+            <h6 style="text-transform: uppercase;">
+                {{ title }}
+            </h6>
+            <div class="divider"></div>
+            <nav class="nav blue lighten-5">
+                <ul>
+                    <li>
+                        <a href="{% url 'inventory:index' %}" class="btn btn-small blue darken-3"><i class="material-icons">home</i></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'accounts:signup' %}" class="btn btn-small blue darken-3"><i class="material-icons">add</i></a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="divider"></div>
+        </div>
+    </div>
+    <div class="col s12">
+        <div class="">
+            <div class="col s12">
+                <div class="">
+                    <table class="responsive-table highlight" id="customers_table" style="width: 100%;">
+                        <thead>
+                              <tr>
+                                  <th>Username</th>
+                                  <th>First name</th>
+                                  <th>Last name</th>
+                                  <th>email</th>
+                                  <th>Roles</th>
+                                  <th>Status</th>
+                                  <th><b>Action</b></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td><a href="">{{ user.username }}</a></td>
+                                <td>{{ user.first_name }}</td>
+                                <td>{{ user.last_name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    {% for group in user.groups.all %}
+                                        <span style="padding: 3px; border: 1px solid lavender; border-radius: 5px;">
+                                            {{ group }}
+                                        </span>
+                                    {% endfor %}
+                                </td>
+                                <td>{{ user.is_staff }}</td>
+                                <td>
+                                    <a href="" class="waves-effect waves-light "><i class="material-icons" style="color: navy;">edit</i></a>
+                                    <a href="" class="waves-effect waves-light confirm-delete"><i class="material-icons" style="color: red;">delete</i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

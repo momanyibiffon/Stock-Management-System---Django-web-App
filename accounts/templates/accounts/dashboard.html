@@ -1,0 +1,218 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% load static %}
+{% block content %}
+   <div class="container">
+       <div class="row card-panel">
+           <!--messages-->
+           {% if messages %}
+            <ul class="messages card-panel green lighten-2 white-text center">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+           <div class="col s12 m4">
+                <div class="">
+                   <h5><b>Dashboard</b></h5>
+               </div>
+               <div class="divider"></div>
+                <!-- Categories -->
+                <ul class="collapsible" data-collapsible="accordion">
+                    <li class="active">
+                        <div class="collapsible-header"><i class="material-icons">settings</i><span  style="margin-left: 10px;">Settings</span></div>
+                      <div class="collapsible-body">
+                        <div class="collection">
+                            <a href="{% url 'accounts:profile' %}" class="collection-item">Profile</a>
+                            <!--<a href="{% url 'accounts:dashboard' user.id %}" class="collection-item">My posts</a>-->
+                           <a href="{% url 'accounts:change_password'  %}" class="collection-item">Change password</a>
+                        </div>
+
+                      </div>
+                    </li>
+                    <!--<li>
+                      <div class="collapsible-header"><i class="material-icons">filter_drama</i>Categories</div>
+                      <div class="collapsible-body">
+                        <div class="collection">
+                            {% for cat in categories %}
+                            <a href="{% url 'posts:category_posts' cat.id %}" class="collection-item">{{ cat.title }}</a>
+                            {% endfor %}
+                        </div>
+
+                      </div>
+                    </li>-->
+                </ul>
+
+               <!-- Latest posts-->
+               <!-- <div class="">
+                    <h6 class="card-panel">Latest Articles</h6>
+                    {% for latest in latest_posts %}
+                    <div class="divider"></div>
+                    <div class="row">
+                        <div class="col s6 m6">
+                          <img src="{{ latest.thumbnail.url }}" width="100%">
+                        </div>
+                        <div class="col s6 m6">
+                            <p style="font-size: 13px;"><a href="{% url 'posts:post_details' latest.id %}">{{ latest.title }}</a></p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>-->
+           </div>
+
+           <div class="col s12 m8">
+
+               <!-- dynamic heading -->
+               {% with url_name=request.resolver_match.url_name %}
+                    {% if url_name == 'dashboard' %}
+                    <h5>My Posts</h5>
+                    <div class="divider"></div>
+                    {% elif url_name == 'edit_post' %}
+                    <h5>Edit Post: {{ post.title }}</h5>
+                    {% endif %}
+               {% endwith %}
+
+               <!-- profile section-->
+                {% with url_name=request.resolver_match.url_name %}
+                    {% if url_name == 'profile' %}
+                    <div class="row">
+
+                        <div class="">
+                            <h5>Profile</h5>
+                        </div>
+                        <div class="divider"></div>
+                        <br>
+                       <div class="">
+                           {% if user.profile.image %}
+                           <img src="{{ user.profile.image.url }}" alt="" width="100px" height="100px" style="border-radius: 99px;">
+                           {% else %}
+                           <img src="{% static 'static_media/placeholder.png' %}" alt="" width="100px" height="100px" style="border-radius: 99px;">
+                           {% endif %}
+                       </div>
+
+                       <table class="striped responsive-table">
+                        <tbody>
+                          <tr>
+                            <td><b>Name</b></td>
+                            <td>{{ user.get_full_name }}</td>
+                          </tr>
+                          <tr>
+                            <td><b>Email</b></td>
+                            <td>{{ user.email }}</td>
+                          </tr>
+                          <tr>
+                            <td><b>Username</b></td>
+                            <td>{{ user.username }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                        <a href="{% url 'accounts:edit_profile'  %}" class="btn btn-small blue darken-3">Edit Profile</a>
+                   </div>
+
+                    <!-- User's posts section-->
+                    {% elif url_name == 'dashboard' %}
+                   <div class="">
+                       {% if all_my_posts%}
+                           {% for post in all_my_posts %}
+                            <div class="row">
+                                <table class="striped responsive-table">
+                                    <tbody>
+                                      <tr class="row">
+                                          <td class="col s5"><a href="">{{ post.title }}</a></td>
+                                          <td class="col s2">Category</td>
+                                          <td class="col s2"><img src="" alt="thumbnail" width="100%"></td>
+                                          <td class="col s3">
+                                              <a href="" class=""><i class="material-icons">visibility</i></a>
+                                              <a href="" class=""><i class="material-icons" style="color: green;">mode_edit</i></a>
+                                              <a href="" class=""><i class="material-icons" style="color: red;">delete</i></a>
+                                          </td>
+                                      </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                           {% endfor %}
+                       {% else %}
+                        <p class="card-panel red lighten-3 white-text">You have not published any post yet!</p>
+                       {% endif %}
+
+                   </div>
+                   <!--Pagination-->
+                   <div class="">
+                       <div class="pagination">
+                            <span class="step-links">
+                                {% if all_my_posts.has_previous %}
+                                    <a href="?page=1">&laquo; first</a>
+                                    <a href="?page={{ all_my_posts.previous_page_number }}">previous</a>
+                                {% endif %}
+
+                                <span class="current">
+                                    Page {{ all_my_posts.number }} of {{ all_my_posts.paginator.num_pages }}.
+                                </span>
+
+                                {% if all_my_posts.has_next %}
+                                    <a href="?page={{ all_my_posts.next_page_number }}">next</a>
+                                    <a href="?page={{ all_my_posts.paginator.num_pages }}">last &raquo;</a>
+                                {% endif %}
+                            </span>
+                       </div>
+                   </div>
+
+               <!-- Edit profile section -->
+                 {% elif url_name == 'edit_profile' %}
+                    <div class="">
+                        <div class="">
+                            <h5>{{ title }}</h5>
+                        </div>
+                        <div class="divider"></div>
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="fieldWrapper">
+                                    <div class="red-text">{{ field.errors }}</div>
+                                    {{ field.label_tag }} {{ field }}
+
+                                </div>
+                            {% endfor %}
+
+                            {% for field in profile_form %}
+                                <div class="fieldWrapper">
+                                    <div class="red-text">{{ field.errors }}</div>
+                                    {{ field.label_tag }} {{ field }}
+
+                                </div>
+                            {% endfor %}
+                            <br>
+                            <input type="submit" class="btn btn-small blue darken-3" value="Update">
+                        </form>
+                    </div>
+
+
+               <!-- Change password section -->
+                 {% elif url_name == 'change_password' %}
+                    <div class="">
+
+                        <div class="">
+                            <h5>{{ cp_title }}</h5>
+                            <div class="divider"></div>
+                        </div>
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            {% for field in cp_form %}
+                                <div class="fieldWrapper">
+                                    <div class="red-text">{{ field.errors }}</div>
+                                    {{ field.label_tag }} {{ field }}
+
+                                </div>
+                            {% endfor %}
+                            <input type="submit" class="btn btn-small blue darken-3" value="Save">
+                        </form>
+                    </div>
+                 {% endif %}
+               {% endwith %}
+           </div>
+
+       </div>
+   </div>
+{% endblock %}

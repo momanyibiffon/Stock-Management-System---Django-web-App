@@ -1,0 +1,120 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <!--{{ title }}-->
+        <div class="col s12">
+            {% if user.is_authenticated %}
+            <div class="row">
+                <div class="col s12 m8">
+                    <div class="row">
+                        <div class="col s12 m6">
+                            <a href="{% url 'inventory:sold_products' %}">
+                              <div class="card-panel center">
+                                  <h6>Total sold products</h6>
+                                    <div class="divider"></div>
+                                      <p>{{ total_sales }}</p>
+                                  </div>
+                            </a>
+                        </div>
+                        <div class="col s12 m6">
+                            <a href="{% url 'inventory:purchased_products' %}">
+                                <div class="card-panel center">
+                                  <h6>Total received products</h6>
+                                  <div class="divider"></div>
+                                    <p>{{ total_purchases }}</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m4">
+                    <a href="{% url 'inventory:out_of_stock' %}">
+                      <div class="card-panel center">
+                          <h6>Out of stock</h6>
+                          <div class="divider"></div>
+                          <p>{{ products_out_of_stock }}</p>
+                      </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="col s12 m6">
+
+                    <div class="row">
+                        <div class="">
+                          <ul class="tabs">
+                            <li class="tab col s6"><a class="active" href="#test1" style="color: #000;">Recently sold</a></li>
+                            <li class="tab col s6"><a href="#test2" style="color: #000;">Recently received</a></li>
+                          </ul>
+                        </div>
+                        <div id="test1" class="">
+                            <!-- Recently sold products-->
+                            <table class="responsive-table highlight" style="background-color: #fff;">
+                                <thead>
+                                      <tr>
+                                          <th>Product</th>
+                                          <th>Vol</th>
+                                          <th>Qty</th>
+                                          <th>Client</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for product in latest_sales %}
+                                    <tr class="prod">
+                                        <td>{{ product.product_name }}</td>
+                                        <td>{{ product.sold_bottle_capacity }}</td>
+                                        <td>{{ product.quantity }}</td>
+                                        <td>{{ product.client }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                            </table>
+                            <!-- end of recently sold products-->
+                        </div>
+                        <div id="test2" class="">
+                           <!-- Recently purchased products-->
+                            <table class="responsive-table highlight" style="background-color: #fff;">
+                                <thead>
+                                      <tr>
+                                          <th>Product</th>
+                                          <th>Vol</th>
+                                          <th>Qty</th>
+                                          <th>Supplier</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for product in latest_purchases %}
+                                    <tr class="prod">
+                                        <td>{{ product.product_name }}</td>
+                                        <td>{{ product.received_bottle_capacity }}</td>
+                                        <td>{{ product.quantity }}</td>
+                                        <td>{{ product.supplier }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                            </table>
+                            <!-- end of recently purchased products-->
+                        </div>
+                      </div>
+
+                </div>
+
+                <div class="col s12 m6">
+                    <!--graph section-->
+                </div>
+
+            </div>
+
+            {% else %}
+            <div class="row">
+                <h4 style="margin-top: 100px;">Dims Stock Management!</h4>
+                <h6>Please login to continue</h6>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

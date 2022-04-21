@@ -1,0 +1,50 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% block title %}Issue Product{% endblock %}
+
+{% block content %}
+    <div class="col s12">
+        <h5>{{ title }} ({{ product.product_name}})</h5>
+        <div class="">
+            <nav class="blue lighten-5">
+                <ul>
+                    <li>
+                        <a href="{% url 'inventory:products' %}" class="btn btn-small blue darken-3">
+                            <i class="material-icons">arrow_back</i>
+                        </a>
+                    </li>
+                    <li><a href="{% url 'inventory:products' %}" class="blue-text">Products</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="divider"></div>
+
+        <div class="">
+           <!--messages-->
+           {% if messages %}
+            <div class="card col s12">
+                <ul class="messages green-text">
+                    {% for message in messages %}
+                    <li style="color: red;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col s6">
+
+                <form action="" method="POST">
+                    {{ form.errors }}
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Issue" class="btn btn-small blue darken-3">
+                </form>
+            </div>
+            <div class="col s6">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

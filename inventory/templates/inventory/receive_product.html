@@ -1,0 +1,35 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% block title %}Receive Product{% endblock %}
+
+{% block content %}
+    <div class="col s12">
+        <h5>{{ title }}</h5>
+        <div class="">
+            <nav class="blue lighten-5">
+                <ul>
+                    <li>
+                        <a href="{% url 'inventory:product_details' product.id %}" class="btn btn-small blue darken-3">
+                            <i class="material-icons">arrow_back</i>
+                        </a>
+                    </li>
+                    <li><a href="{% url 'inventory:products' %}" class="blue-text">Products</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="divider"></div>
+        <div class="row">
+            <div class="col s6">
+                <form action="" method="POST">
+
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Receive" class="btn btn-small blue darken-3">
+                </form>
+            </div>
+            <div class="col s6">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

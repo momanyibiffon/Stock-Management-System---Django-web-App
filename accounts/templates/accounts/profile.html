@@ -1,0 +1,73 @@
+{% extends 'inventory/base_layout.html' %}
+
+{% load static%}
+{% block content %}
+   <div class="container">
+
+        <!--messages-->
+       {% if messages %}
+        <ul class="messages card-panel green lighten-1 white-text center">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+       <div class="row ">
+           <h5>{{ title }}</h5>
+           <div class="divider"></div>
+       </div>
+
+       <div class="row ">
+           <div class="col s12 m8">
+                <br>
+               <div class="row">
+                   <div class="">
+                       {% if user.profile.image %}
+                       <img src="{{ user.profile.image.url }}" alt="" width="100px" height="100px" style="border-radius: 99px;">
+                       {% else %}
+                       <img src="{% static 'static_media/placeholder.png' %}" alt="" width="100px" height="100px" style="border-radius: 99px;">
+                       {% endif %}
+                   </div>
+
+                   <table class="striped responsive-table">
+                    <tbody>
+                      <tr>
+                        <td><b>Name</b></td>
+                        <td>{{ user.get_full_name }}</td>
+                      </tr>
+                      <tr>
+                        <td><b>Email</b></td>
+                        <td>{{ user.email }}</td>
+                      </tr>
+                      <tr>
+                        <td><b>Username</b></td>
+                        <td>{{ user.username }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+               </div>
+
+           </div>
+           <div class="col s12 m4">
+                <!-- settings -->
+                <ul class="collapsible" data-collapsible="accordion">
+                    <li class="active">
+                      <div class="collapsible-header"><i class="material-icons">settings</i>Settings</div>
+                      <div class="collapsible-body">
+                        <div class="collection">
+                            <a href="{% url 'posts:dashboard' user.id %}" class="collection-item">Dashboard</a>
+                            <a href="{% url 'accounts:edit_profile' %}" class="collection-item">Edit Profile</a>
+                        </div>
+
+                      </div>
+                    </li>
+                </ul>
+
+
+                </div>
+           </div>
+       </div>
+   </div>
+{% endblock %}
